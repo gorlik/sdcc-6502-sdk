@@ -1,6 +1,6 @@
 # sdcc SDK makefile
 
-SDCCDIR=/mnt/share/local/sdcc-next/bin
+SDCCDIR=/mnt/share/local/sdcc420/bin
 SDCC=$(SDCCDIR)/sdcc
 SDAS=$(SDCCDIR)/sdas6500
 MAKEBIN=$(SDCCDIR)/makebin
