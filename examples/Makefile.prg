@@ -13,7 +13,7 @@ SDCCDEBUG=--fverbose-asm --i-code-in-asm
 SDKINC= -I $(SDKDIR)/include
 
 SDCCFLAGS = $(SDCCTARGET) $(SDCCOPT) $(SDKINC)
-SDCCLINKFLAGS = -L $(SDKDIR)/lib --out-fmt-ihx -mmos6502 --no-std-crt0 --code-loc 0x7ff --xram-loc 0x6000
+SDCCLINKFLAGS = -L $(SDKDIR)/lib -mmos6502 --no-std-crt0 --code-loc 0x7ff
 CRT=$(SDKDIR)/lib/c64_prg_crt0.rel
 LIBS=c64.lib
 
