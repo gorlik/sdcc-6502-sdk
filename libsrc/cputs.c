@@ -2,6 +2,6 @@
 
 void cputs(const unsigned char *s)
 {
-  while(*s++)
-	cputc(*s);
+  while(*s)
+	cputc(*s++);
 }

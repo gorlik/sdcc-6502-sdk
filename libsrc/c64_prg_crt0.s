@@ -1,49 +1,45 @@
 	.module crt0
 
-	;; Ordering of segments for the linker.
-        .area HOME    (CODE)
-        .area GSINIT  (CODE)
-        .area GSFINAL (CODE)
-        .area CSEG    (CODE)
-        .area XINIT   (CODE)
-        .area CONST   (CODE)
-        .area DSEG    (PAG)
+	; Ordering of segments for the linker.
+        .area _CODE
+        .area GSINIT
+        .area GSFINAL
+        .area CODE
+        .area RODATA
+        .area XINIT
+	.area _DATA
+        .area DATA
+        .area BSS
+        .area ZP      (PAG)
         .area OSEG    (PAG, OVR)
-        .area XSEG
-        .area XISEG
-        .area DSEG    (PAG)
 
         .area GSINIT
-	.dw   0x0801
+	.dw   . + 2 ; prg load address (0x0801)
 	.dw   __next_line
         .dw   0x01a4        ; Line number
         .db   0x9E             ; SYS token
-;       .db   <(((__sdcc_gs_init_startup / 10000) % 10) + '0)
-;//        .db   (((__sdcc_gs_init_startup /  1000) % 10) + '0') 
-;//        .db   (((__sdcc_gs_init_startup /   100) % 10) + '0')
-;//        .db   (((__sdcc_gs_init_startup /    10) % 10) + '0')
-;//        .db   (((__sdcc_gs_init_startup /     1) % 10) + '0')
+;//        .db   (((__prg_init / 10000) % 10) + '0')
+;//        .db   (((__prg_init /  1000) % 10) + '0')
+;//        .db   (((__prg_init /   100) % 10) + '0')
+;//        .db   (((__prg_init /    10) % 10) + '0')
+;//        .db   (((__prg_init /     1) % 10) + '0')
 	.db '2','0','6','1'
         .db   0x00             ; End of BASIC line
 __next_line:
 	.dw   0               ; BASIC end marker
 
-__sdcc_gs_init_startup:
+__prg_init:
         ldx     #0xff
         txs
 	lda 0x01
-	and #0xfe
-	sta 0x01	; clear LORAM to get 52K contiguos RAM
+	and #0xfe	; clear LORAM (disable BASIC ROM)
+	sta 0x01	; to get 52K contiguos RAM
 
+__sdcc_gs_init_startup:
 ;        ldx     #0x01         ; MSB of stack ptr
 ;        stx     __BASEPTR+1
 
-        jsr     __sdcc_external_startup
-        beq     __sdcc_init_data
-        jmp     __sdcc_program_startup
-
-__sdcc_init_data:
-; _m6502_genXINIT() start
+; initialize DATA
         lda #<s_XINIT
         sta ___memcpy_PARM_2
         lda #>s_XINIT
@@ -52,33 +48,26 @@ __sdcc_init_data:
         sta ___memcpy_PARM_3
         lda #>l_XINIT
         sta ___memcpy_PARM_3+1
-        lda #<s_XISEG
-        ldx #>s_XISEG
+        lda #<s_DATA
+        ldx #>s_DATA
         jsr ___memcpy
-; _m6502_genXINIT() end
 
-; _m6502_genXSEG() start
+; clear BSS
         lda #0x00
         sta _memset_PARM_2
-        sta _memset_PARM_2+1
-        lda #<l_XSEG
+        lda #<l_BSS
         sta _memset_PARM_3
-        lda #>l_XSEG
+        lda #>l_BSS
         sta _memset_PARM_3+1
-        lda #<s_XSEG
-        ldx #>s_XSEG
+        lda #<s_BSS
+        ldx #>s_BSS
         jsr _memset
-; _m6502_genXSEG() end
+
+; switch to lowercase
 	lda #14
 	jsr 0xffd2
 
         .area GSFINAL
-        jmp     __sdcc_program_startup
-
-        .area CSEG
 __sdcc_program_startup:
         jsr     _main
         jmp     .
-
-__sdcc_indirect_jsr::
-        jmp     [__TEMP]

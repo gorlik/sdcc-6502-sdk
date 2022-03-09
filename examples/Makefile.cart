@@ -5,16 +5,16 @@ MAKEBIN = $(SDCCROOT)/makebin
 
 SDKROOT = ../../cbm-games/cbm-sdk
 TARGET = -mmos6502 -D__C64__
-SDCCOPT=--max-allocs-per-node 25000 --opt-code-speed
-SDCCDEBUG=--fverbose-asm --i-code-in-asm
+SDCCOPT = --max-allocs-per-node 25000 --opt-code-speed
+SDCCDEBUG = --fverbose-asm --i-code-in-asm
 SDKINC = -I $(SDKROOT)/include
 
 CART = --code-loc 0x8000 --xram-loc 0x1000 $(SDKROOT)/lib/c64_cart_crt0.rel
-PRG = --code-loc 0x7ff --xram-loc 0x8000 $(SDKROOT)/lib/c64_prg_crt0.rel
+PRG = --code-loc 0x7ff $(SDKROOT)/lib/c64_prg_crt0.rel
 LIBS = -l c64.lib
 
 CFLAGS = $(TARGET) $(SDCCOPT) $(SDKINC)
-LDFLAGS = -L $(SDKROOT)/lib --out-fmt-ihx -mmos6502 --no-std-crt0
+LDFLAGS = -L $(SDKROOT)/lib -mmos6502 --no-std-crt0
 
 OBJECTS = add32.rel
 

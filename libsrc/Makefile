@@ -27,7 +27,7 @@ all: $(CRT) $(OBJECTS)
 
 
 clean:
-	rm -rf *.ihx *.rel *.map *.noi *.asm *.lk *.sym *.lst ../lib
+	rm -rf *.ihx *.rel *.map *.noi *.asm *.lk *.sym *.lst *.lib ../lib
 
 %.prg: %.ihx
 	$(MAKEBIN) -o 2047 -p $< $@
