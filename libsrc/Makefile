@@ -18,8 +18,7 @@ CRT = c64_prg_crt0.rel c64_cart_crt0.rel
 OBJECTS = putchar.rel kbhit.rel cgetc.rel cputc.rel cputs.rel gotoxy.rel bordercolor.rel clrscr.rel
 
 all: $(CRT) $(OBJECTS)
-	$(SDCCDIR)/sdar -rcSD c64.lib $(OBJECTS)
-	$(SDCCDIR)/sdar s c64.lib
+	$(SDCCDIR)sdar rcSDs c64.lib $(OBJECTS)
 	mkdir -p ../lib
 	cp c64.lib ../lib
 	cp c64_cart_crt0.rel ../lib
