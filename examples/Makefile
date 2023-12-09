@@ -37,12 +37,12 @@ clean:
 .PRECIOUS: %.rel %.ihx
 
 %.bin: $(OBJECTS)
-	$(SDCC) $(LDFLAGS) --code-loc 0x8000 --xram-loc 0x1000 $(CRTCART) -l $(LIBS) $< -o $@.ihx
+	$(SDCC) $(LDFLAGS) --code-loc 0x8000 --data-loc 0x12 --xram-loc 0x1000 $(CRTCART) -l $(LIBS) $< -o $@.ihx
 	$(MAKEBIN) -o 0x8000 -s 0xc000 $@.ihx $@
 
 
 %.prg: $(OBJECTS)
-	$(SDCC) $(LDFLAGS) --code-loc 0x07ff $(CRTPRG) -l $(LIBS) $< -o $@.ihx
+	$(SDCC) $(LDFLAGS) --code-loc 0x07ff --data-loc 0x12 --xram-loc 0xc000 $(CRTPRG) -l $(LIBS) $< -o $@.ihx
 	$(MAKEBIN) -o 0x07ff -s 0xd000 -p $@.ihx $@
 
 %.rel: %.c
