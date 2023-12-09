@@ -1,9 +1,10 @@
 # sdcc SDK makefile
 
-SDCCDIR=/mnt/share/local/sdcc420/bin
-SDCC=$(SDCCDIR)/sdcc
-SDAS=$(SDCCDIR)/sdas6500
-MAKEBIN=$(SDCCDIR)/makebin
+SDCCDIR=/usr
+SDCC=$(SDCCDIR)/bin/sdcc
+SDAS=$(SDCCDIR)/bin/sdas6500
+SDAR=$(SDCCDIR)/bin/sdar
+MAKEBIN=$(SDCCDIR)/bin/makebin
 
 SDKDIR=..
 
@@ -18,12 +19,11 @@ CRT = c64_prg_crt0.rel c64_cart_crt0.rel
 OBJECTS = putchar.rel kbhit.rel cgetc.rel cputc.rel cputs.rel gotoxy.rel bordercolor.rel clrscr.rel
 
 all: $(CRT) $(OBJECTS)
-	$(SDCCDIR)sdar rcSDs c64.lib $(OBJECTS)
+	$(SDAR) rcSDs c64.lib $(OBJECTS)
 	mkdir -p ../lib
 	cp c64.lib ../lib
 	cp c64_cart_crt0.rel ../lib
 	cp c64_prg_crt0.rel  ../lib
-
 
 clean:
 	rm -rf *.ihx *.rel *.map *.noi *.asm *.lk *.sym *.lst *.lib ../lib
